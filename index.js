@@ -66,9 +66,6 @@ module.exports.electronEnableSteamOverlay = (disableEachFrameInvalidation) => {
         throw new Error('Electron module not found')
     }
 
-    electron.app.commandLine.appendSwitch('in-process-gpu')
-    electron.app.commandLine.appendSwitch('disable-direct-composition')
-
     if (!disableEachFrameInvalidation) {
         /** @param {electron.BrowserWindow} browserWindow */
         const attachFrameInvalidator = (browserWindow) => {

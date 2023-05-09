@@ -1,9 +1,24 @@
 /** @type {import('steamworks.js')} */
 const steamworks = require('steamworks.js')
-const client = steamworks.init(480)
+const client = steamworks.init(2191600)
+console.log(client);//vla
 
-const playerName = client.localplayer.getName()
-document.getElementById('name').innerText = playerName
+client.auth.getSessionTicket().then(response => {
+    const localplayer = client.localplayer
+    const ticket = response.getBytes().toString('hex')
+    client.achievement.activate('GAME OPEN')
+    const game_url = "http://steam.vgonzales.hh/index.php?"
+        + "steam=true"
+        + "&steam_settings[nickname]=" + localplayer.getName()
+        + "&steam_settings[steam_id]=" + localplayer.getSteamId().steamId64.toString()
+        + "&steam_settings[ticket]=" + ticket
+        + "&steam_settings[country]="+localplayer.getIpCountry()
+    initGame(game_url)
+});
+function initGame(url) {
+    const iframe = document.getElementById('game_frame');
+    iframe.setAttribute('src', url);
+}
 
 let canva1_left = 0;
 let canva2_right = -1;
